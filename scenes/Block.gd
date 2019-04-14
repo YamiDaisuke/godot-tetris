@@ -1,9 +1,9 @@
 tool
 extends Node2D
 
-enum BlockColor { 
-    Blue, 
-    Purple, 
+enum BlockColor {
+    Blue,
+    Purple,
     Red,
     Green,
     Yellow,
