@@ -9,10 +9,11 @@ extents = Vector2( 8.9, 8.9 )
 [node name="Block" type="CollisionShape2D"]
 shape = SubResource( 1 )
 script = ExtResource( 1 )
-color = 2
+color = 4
 
 [node name="Sprite" type="Sprite" parent="."]
 texture = ExtResource( 2 )
 region_enabled = true
-region_rect = Rect2( 36, 0, 18, 18 )
+region_rect = Rect2( 72, 0, 18, 18 )
+region_filter_clip = true
 

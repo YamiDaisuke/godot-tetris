@@ -5,21 +5,20 @@
 
 [node name="Piece" type="KinematicBody2D"]
 script = ExtResource( 1 )
-shape = 6
 
 [node name="Block0" parent="." instance=ExtResource( 2 )]
-position = Vector2( -9, -9 )
-color = 4
+position = Vector2( -27, 9 )
+color = 5
 
 [node name="Block1" parent="." instance=ExtResource( 2 )]
-position = Vector2( 9, -9 )
-color = 4
+position = Vector2( -9, 9 )
+color = 5
 
 [node name="Block2" parent="." instance=ExtResource( 2 )]
-position = Vector2( -9, 9 )
-color = 4
+position = Vector2( 9, 9 )
+color = 5
 
 [node name="Block3" parent="." instance=ExtResource( 2 )]
-position = Vector2( 9, 9 )
-color = 4
+position = Vector2( 27, 9 )
+color = 5
 
