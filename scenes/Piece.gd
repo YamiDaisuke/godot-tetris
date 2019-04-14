@@ -76,8 +76,16 @@ export (Vector2) var velocity = Vector2(0, 100)
 
 var stopped = false
 
+var blocks = []
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
+    self.blocks = [
+        $Block0,
+        $Block1,
+        $Block2,
+        $Block3,
+    ]
     self.draw_shape(self.shape)
 
 
@@ -89,15 +97,14 @@ func _physics_process(delta):
 
 
 func draw_shape(shape):
-    $Block0.color = SHAPE_COLOR[shape]
-    $Block1.color = SHAPE_COLOR[shape]
-    $Block2.color = SHAPE_COLOR[shape]
-    $Block3.color = SHAPE_COLOR[shape]
     
-    $Block0.position = SHAPES[shape][0] * BLOCK_SIZE
-    $Block1.position = SHAPES[shape][1] * BLOCK_SIZE
-    $Block2.position = SHAPES[shape][2] * BLOCK_SIZE
-    $Block3.position = SHAPES[shape][3] * BLOCK_SIZE
+    if self.blocks.empty():
+        return
+    
+    for i in range(self.blocks.size()):
+        self.blocks[i].color = SHAPE_COLOR[shape]
+        self.blocks[i].position = SHAPES[shape][i] * BLOCK_SIZE
+
 
 func _set_rotation(new_rotation):
     rotationPosition = new_rotation
@@ -106,5 +113,4 @@ func _set_rotation(new_rotation):
 
 func _set_shape(new_shape: int):
     shape = new_shape
-    if Engine.is_editor_hint():
-        self.draw_shape(self.shape)
+    self.draw_shape(self.shape)
