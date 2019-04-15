@@ -109,6 +109,8 @@ func _physics_process(delta):
         var output = self.move_and_slide(speed)
         if output.y != speed.y:
             self.stopped = true
+            self.position.x = round(self.position.x / 18) * 18
+            self.position.y = round(self.position.y / 18) * 18
             self.emit_signal("piece_have_fallen", self)
 
         if Input.is_action_just_pressed("left"):
