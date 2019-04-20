@@ -22,10 +22,10 @@ const SHAPE_COLOR = [
 const SHAPES = [
     # I
     [
-        Vector2(-1.5,0.5),
-        Vector2(-0.5,0.5),
-        Vector2(0.5,0.5),
-        Vector2(1.5,0.5),
+        Vector2(-1.5,-0.5),
+        Vector2(-0.5,-0.5),
+        Vector2(0.5,-0.5),
+        Vector2(1.5,-0.5),
     ],
     # Z
     [
@@ -36,10 +36,10 @@ const SHAPES = [
     ],
     # S
     [
-        Vector2(-0.5,-0.5),
         Vector2(0.5,-0.5),
-        Vector2(-1.5,0.5),
+        Vector2(1.5,-0.5),
         Vector2(-0.5,0.5),
+        Vector2(0.5,0.5),
     ],
     # T
     [
@@ -50,17 +50,17 @@ const SHAPES = [
     ],
     # L
     [
-        Vector2(-0.5,0.5),
-        Vector2(0.5,0.5),
-        Vector2(1.5,0.5),
+        Vector2(-0.5,-0.5),
+        Vector2(0.5,-0.5),
         Vector2(1.5,-0.5),
+        Vector2(-0.5,0.5),
     ],
     # J
     [
-        Vector2(-0.5,-0.5),
-        Vector2(-0.5,0.5),
-        Vector2(0.5,0.5),
         Vector2(1.5,0.5),
+        Vector2(-0.5,-0.5),
+        Vector2(0.5,-0.5),
+        Vector2(1.5,-0.5),
     ],
     # O
     [
@@ -70,6 +70,8 @@ const SHAPES = [
         Vector2(0.5,0.5),
     ],
 ]
+
+export(bool) var static_mode = false
 
 export(int, "I", "Z", "S", "T", "L", "J", "O") var shape = 0 setget _set_shape
 export (Rotations) var rotationPosition = Rotations.ZERO setget _set_rotation
@@ -92,6 +94,9 @@ func _ready():
 
 
 func _physics_process(delta):
+    if self.static_mode:
+        return
+
     if !Engine.is_editor_hint() and !stopped:
 
         if Input.is_action_just_pressed("rotate_right"):
