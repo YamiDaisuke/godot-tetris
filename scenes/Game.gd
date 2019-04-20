@@ -10,6 +10,9 @@ export (Vector2) var origin = Vector2(-4.5, 19.5)
 
 # Board Size 10x20
 var board = []
+onready var spawner = $BoardBody/PieceSpawner
+onready var board_body = $BoardBody
+onready var piece_counter = $PieceCounter
 
 func _ready():
 
@@ -18,7 +21,8 @@ func _ready():
         for j in range(BOARD_WIDTH):
             board[i].append(null)
 
-    var piece = $PieceSpawner.spawn()
+    var piece = spawner.spawn()
+    piece_counter.add_piece(piece)
     piece.connect("piece_have_fallen", self, "_on_piece_fallen")
 
 
@@ -26,12 +30,19 @@ func _on_piece_fallen(piece: Piece):
 #    print("#### A piece have fallen!!!!")
 
     var to_review = add_piece_2_board(piece)
+
+    # If to_review is null then game is over!
+    if to_review == null:
+        print("GAME OVER!!!")
+        return
+
     var to_be_deleted = check_rows(to_review)
 
     if !to_be_deleted.empty():
         self.clear_rows(to_be_deleted)
 
-    var new_piece = $PieceSpawner.spawn()
+    var new_piece = spawner.spawn()
+    piece_counter.add_piece(new_piece)
     new_piece.connect("piece_have_fallen", self, "_on_piece_fallen")
 
 """
@@ -45,15 +56,20 @@ func add_piece_2_board(piece: Piece):
         # print(" --> Block Position: %s" % self.to_local(b.global_position))
         var block_position = b.global_position
         var block_rotation = b.global_rotation
-
-        var position = (self.to_local(b.global_position) / 18) - origin
+        var position = (board_body.to_local(b.global_position) / 18) - origin
         position.y *= -1
+
+        if position.y >= BOARD_HEIGHT - 1:
+            to_review = null
+        else:
+            board[position.y][position.x] = b
+
         # print(" --> Normalized %s" % position)
-        if !(position.y in to_review):
+        if to_review != null and !(position.y in to_review):
             to_review.append(position.y)
-        board[position.y][position.x] = b
+
         b.get_parent().remove_child(b)
-        $BoardBody.add_child(b)
+        board_body.add_child(b)
         b.global_position = block_position
         b.global_rotation = block_rotation
 
