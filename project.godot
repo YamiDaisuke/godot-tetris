@@ -19,6 +19,12 @@ config/name="Tetris"
 run/main_scene="res://scenes/Game.tscn"
 config/icon="res://icon.png"
 
+[display]
+
+window/size/width=800
+window/stretch/mode="viewport"
+window/stretch/aspect="keep"
+
 [input]
 
 left={
