@@ -1,10 +1,11 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://scenes/Game.gd" type="Script" id=1]
 [ext_resource path="res://scenes/PieceCounter.tscn" type="PackedScene" id=2]
 [ext_resource path="res://scenes/PieceSpawner.tscn" type="PackedScene" id=3]
 [ext_resource path="res://scenes/Score.tscn" type="PackedScene" id=4]
 [ext_resource path="res://scenes/Timer.tscn" type="PackedScene" id=5]
+[ext_resource path="res://scenes/NextPiece.tscn" type="PackedScene" id=6]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 10, 180 )
@@ -66,4 +67,10 @@ margin_left = 534.095
 margin_top = 135.454
 margin_right = 792.095
 margin_bottom = 203.454
+
+[node name="NextPiece" parent="." instance=ExtResource( 6 )]
+margin_left = 615.507
+margin_top = 220.375
+margin_right = 709.507
+margin_bottom = 288.375
 

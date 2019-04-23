@@ -7,7 +7,7 @@ const BOARD_HEIGHT = 20
 const BOARD_WIDTH = 10
 
 export (Vector2) var origin = Vector2(-4.5, 19.5)
-export (int, 0, 999) var level = 9
+export (int, 0, 999) var level = 0
 export (int, 1, 99) var level_targe_lines = 10
 
 # Board Size 10x20
@@ -18,6 +18,7 @@ var lines_in_level = 0
 onready var spawner = $BoardBody/PieceSpawner
 onready var board_body = $BoardBody
 onready var piece_counter = $PieceCounter
+onready var next_display = $NextPiece
 
 func _ready():
     for i in range(BOARD_HEIGHT):
@@ -29,16 +30,20 @@ func _ready():
     $Score.level = self.level
     $Timer.start()
 
+
 func spawn_piece():
-    var new_piece = spawner.spawn()
+    var pieces = spawner.spawn()
+
+    var new_piece = pieces['piece']
     new_piece.set_level(self.level)
     piece_counter.add_piece(new_piece)
     new_piece.connect("piece_have_fallen", self, "_on_piece_fallen")
 
+    next_display.set_piece_shape(pieces['next'])
+
 
 func _on_piece_fallen(piece: Piece):
 #    print("#### A piece have fallen!!!!")
-
     var to_review = add_piece_2_board(piece)
 
     # If to_review is null then game is over!
@@ -84,6 +89,7 @@ func add_piece_2_board(piece: Piece):
 
     return to_review
 
+
 """
 Check the provided rows to see if they are full
 returns the complete rows found
@@ -104,6 +110,7 @@ func check_rows(to_review: Array):
 #            print("Huston we got a line!")
     return to_be_deleted
 
+
 """
 Clears the provided rows and moves all the
 pieces to their new position
@@ -120,19 +127,27 @@ func clear_rows(to_be_deleted: Array):
         print("Changing level to %d" % self.level)
         $Score.level = self.level
 
+    var last_deleted = BOARD_HEIGHT
+    var deleted = 0
 
     for row in range(BOARD_HEIGHT):
         var empty = true
+        var delete = false
+        if row in to_be_deleted:
+            delete = true
+            deleted += 1
+            last_deleted = row
+
         for col in range(BOARD_WIDTH):
-            if row >= delete_min and row <= delete_max:
+            if delete:
                 board[row][col].queue_free()
                 board[row][col] = null
                 empty = false
-            elif row > delete_max:
+            elif row > last_deleted:
                 var block = board[row][col]
-                if block != null:
-                    board[row - count][col] = block
-                    block.position.y += 18 * count
+                if block:
+                    board[row - deleted][col] = block
+                    block.position.y += 18 * deleted
                     board[row][col] = null
                     empty = false
             elif board[row][col]:
@@ -140,3 +155,16 @@ func clear_rows(to_be_deleted: Array):
 
         if empty:
             break
+
+
+"""
+For debug porpuses, don't call in a real game
+"""
+func print_board():
+    for row in range(BOARD_HEIGHT):
+        var to_print = ""
+        for col in range(BOARD_WIDTH):
+            var x = "X" if board[row][col] != null else " "
+            to_print = "%s[%s]" % [to_print,x]
+        print(to_print)
+    print("      ")
