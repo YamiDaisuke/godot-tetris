@@ -7,23 +7,33 @@ const BOARD_HEIGHT = 20
 const BOARD_WIDTH = 10
 
 export (Vector2) var origin = Vector2(-4.5, 19.5)
+export (int, 0, 999) var level = 9
+export (int, 1, 99) var level_targe_lines = 10
 
 # Board Size 10x20
 var board = []
+# The lines done since the last level change
+var lines_in_level = 0
+
 onready var spawner = $BoardBody/PieceSpawner
 onready var board_body = $BoardBody
 onready var piece_counter = $PieceCounter
 
 func _ready():
-
     for i in range(BOARD_HEIGHT):
         board.append([])
         for j in range(BOARD_WIDTH):
             board[i].append(null)
 
-    var piece = spawner.spawn()
-    piece_counter.add_piece(piece)
-    piece.connect("piece_have_fallen", self, "_on_piece_fallen")
+    self.spawn_piece()
+    $Score.level = self.level
+    $Timer.start()
+
+func spawn_piece():
+    var new_piece = spawner.spawn()
+    new_piece.set_level(self.level)
+    piece_counter.add_piece(new_piece)
+    new_piece.connect("piece_have_fallen", self, "_on_piece_fallen")
 
 
 func _on_piece_fallen(piece: Piece):
@@ -34,6 +44,7 @@ func _on_piece_fallen(piece: Piece):
     # If to_review is null then game is over!
     if to_review == null:
         print("GAME OVER!!!")
+        $Timer.stop()
         return
 
     var to_be_deleted = check_rows(to_review)
@@ -41,9 +52,7 @@ func _on_piece_fallen(piece: Piece):
     if !to_be_deleted.empty():
         self.clear_rows(to_be_deleted)
 
-    var new_piece = spawner.spawn()
-    piece_counter.add_piece(new_piece)
-    new_piece.connect("piece_have_fallen", self, "_on_piece_fallen")
+    self.spawn_piece()
 
 """
 Adds the piece blocks to board and returns
@@ -103,6 +112,14 @@ func clear_rows(to_be_deleted: Array):
     var delete_min = to_be_deleted.min()
     var delete_max = to_be_deleted.max()
     var count = to_be_deleted.size()
+
+    $Score.add_lines(count)
+    self.lines_in_level += count
+    if self.lines_in_level >= self.level_targe_lines:
+        self.level += 1
+        print("Changing level to %d" % self.level)
+        $Score.level = self.level
+
 
     for row in range(BOARD_HEIGHT):
         var empty = true
