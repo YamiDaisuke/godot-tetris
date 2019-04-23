@@ -109,7 +109,7 @@ func _physics_process(delta):
         var speed = Vector2(velocity.x, velocity.y)
 
         if Input.is_action_pressed("down"):
-            speed.y *= 10
+            speed.y = BLOCK_SIZE * 20
 
         var output = self.move_and_slide(speed)
         if output.y != speed.y:
@@ -125,8 +125,6 @@ func _physics_process(delta):
         if Input.is_action_just_pressed("right"):
             #warning-ignore:return_value_discarded
             self.move_and_slide(Vector2(BLOCK_SIZE / delta, 0))
-
-
 
 
 func draw_shape(shape):
@@ -150,6 +148,10 @@ func _set_rotation(new_rotation):
     self.rotation = deg2rad(90 * rotationPosition)
 
 
+func set_level(level:int):
+    var time = pow((0.8 - ((level - 1) * 0.007)), level - 1)
+    self.velocity = Vector2(0, BLOCK_SIZE / time)
+    # Time = (0.8-((Level-1)*0.007))^(Level-1)
 
 
 func _set_shape(new_shape: int):
