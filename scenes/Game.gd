@@ -3,11 +3,11 @@ extends Node2D
 const Piece = preload("res://scenes/Piece.gd")
 const Block = preload("res://scenes/Block.gd")
 
-const BOARD_HEIGHT = 20
-const BOARD_WIDTH = 10
+const BOARD_HEIGHT = 40
+const BOARD_WIDTH = 20
 
-export (Vector2) var origin = Vector2(-4.5, 19.5)
-export (int, 0, 999) var level = 0
+export (Vector2) var origin = Vector2(-9.5, 39.5)
+export (int, 0, 999) var level = 0 setget set_level
 export (int, 1, 99) var level_targe_lines = 10
 
 # Board Size 10x20
@@ -30,15 +30,21 @@ func _ready():
     $Score.level = self.level
     $Timer.start()
 
+func set_level(new_level:int):
+    if new_level != level:
+        lines_in_level = 0
+
+    level = new_level
+    print("Changing level to %d" % self.level)
+    $Score.level = self.level
+
 
 func spawn_piece():
     var pieces = spawner.spawn()
-
     var new_piece = pieces['piece']
     new_piece.set_level(self.level)
     piece_counter.add_piece(new_piece)
     new_piece.connect("piece_have_fallen", self, "_on_piece_fallen")
-
     next_display.set_piece_shape(pieces['next'])
 
 
@@ -59,6 +65,7 @@ func _on_piece_fallen(piece: Piece):
 
     self.spawn_piece()
 
+
 """
 Adds the piece blocks to board and returns
 the affected rows
@@ -70,7 +77,8 @@ func add_piece_2_board(piece: Piece):
         # print(" --> Block Position: %s" % self.to_local(b.global_position))
         var block_position = b.global_position
         var block_rotation = b.global_rotation
-        var position = (board_body.to_local(b.global_position) / 18) - origin
+        var position = (board_body.to_local(b.global_position) / 18)
+        position -= origin
         position.y *= -1
 
         if position.y >= BOARD_HEIGHT - 1:
@@ -116,16 +124,13 @@ Clears the provided rows and moves all the
 pieces to their new position
 """
 func clear_rows(to_be_deleted: Array):
-    var delete_min = to_be_deleted.min()
-    var delete_max = to_be_deleted.max()
     var count = to_be_deleted.size()
 
     $Score.add_lines(count)
     self.lines_in_level += count
     if self.lines_in_level >= self.level_targe_lines:
         self.level += 1
-        print("Changing level to %d" % self.level)
-        $Score.level = self.level
+
 
     var last_deleted = BOARD_HEIGHT
     var deleted = 0
