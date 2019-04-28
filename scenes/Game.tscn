@@ -60,7 +60,6 @@ margin_bottom = 1011.0
 texture = ExtResource( 6 )
 
 [node name="BoardBody" type="KinematicBody2D" parent="."]
-editor/display_folded = true
 position = Vector2( 518, 18 )
 __meta__ = {
 "_edit_group_": true

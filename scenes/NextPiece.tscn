@@ -44,4 +44,5 @@ rect_min_size = Vector2( 72, 36 )
 [node name="Piece" parent="MarginContainer/VBoxContainer/Control" instance=ExtResource( 4 )]
 position = Vector2( 27, 18 )
 static_mode = true
+lock_delay = 0.5
 

@@ -75,12 +75,17 @@ export(bool) var static_mode = false
 
 export(int, "I", "Z", "S", "T", "L", "J", "O") var shape = 0 setget _set_shape
 export (Rotations) var rotationPosition = Rotations.ZERO setget _set_rotation
-
 export (Vector2) var velocity = Vector2(0, 18)
+export (float) var lock_delay = 0.5
 
 var stopped = false
+var lock_time = 0
 
 var blocks = []
+
+var time = 0
+
+var game = null
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -92,39 +97,56 @@ func _ready():
     ]
     self.draw_shape(self.shape)
 
+    if !self.static_mode:
+        yield(fall(), "completed")
+
+
+func fall():
+    while true:
+        var time = self.time
+        if self.static_mode:
+            return
+
+        if !Engine.is_editor_hint() and !self.stopped and game != null:
+            if game.is_valid_position(self, Vector2(0,-1)):
+                self.position.y += BLOCK_SIZE
+            elif self.lock_time > self.lock_delay:
+                self.emit_signal("piece_have_fallen", self)
+                self.lock_time = 0
+                self.stopped = true
+            else:
+                self.lock_time += self.time
+
+
+            if Input.is_action_pressed("down"):
+                time = BLOCK_SIZE / 360
+        yield(get_tree().create_timer(time), "timeout")
 
 func _physics_process(delta):
     if self.static_mode:
         return
 
-    if !Engine.is_editor_hint() and !stopped:
+    if !Engine.is_editor_hint() and !self.stopped:
 
         if Input.is_action_just_pressed("rotate_right"):
             self.rotationPosition = self.rotationPosition + 1 % 4
+            if !self.game.is_valid_position(self):
+                self.rotationPosition = self.rotationPosition - 1 % 4
 
         if Input.is_action_just_pressed("rotate_left"):
             self.rotationPosition = self.rotationPosition - 1 % 4
-
-
-        var speed = Vector2(velocity.x, velocity.y)
-
-        if Input.is_action_pressed("down"):
-            speed.y = BLOCK_SIZE * 20
-
-        var output = self.move_and_slide(speed)
-        if output.y != speed.y:
-            self.stopped = true
-            self.position.x = round(self.position.x / 18) * 18
-            self.position.y = round(self.position.y / 18) * 18
-            self.emit_signal("piece_have_fallen", self)
+            if !self.game.is_valid_position(self):
+                self.rotationPosition = self.rotationPosition + 1 % 4
 
         if Input.is_action_just_pressed("left"):
-            #warning-ignore:return_value_discarded
-            self.move_and_slide(-Vector2(BLOCK_SIZE / delta, 0))
+            print("Try to move left!!")
+            if game.is_valid_position(self, Vector2(-1,0)):
+                self.position.x -= BLOCK_SIZE
 
         if Input.is_action_just_pressed("right"):
-            #warning-ignore:return_value_discarded
-            self.move_and_slide(Vector2(BLOCK_SIZE / delta, 0))
+            print("Try to move left!!")
+            if game.is_valid_position(self, Vector2(1,0)):
+                self.position.x += BLOCK_SIZE
 
 
 func draw_shape(shape):
@@ -148,8 +170,13 @@ func _set_rotation(new_rotation):
     self.rotation = deg2rad(90 * rotationPosition)
 
 
+func get_time(level:int):
+    return pow((0.8 - ((level - 1) * 0.007)), level - 1)
+
+
 func set_level(level:int):
-    var time = pow((0.8 - ((level - 1) * 0.007)), level - 1)
+    var time = get_time(level)
+    self.time = time
     self.velocity = Vector2(0, BLOCK_SIZE / time)
     # Time = (0.8-((Level-1)*0.007))^(Level-1)
 
