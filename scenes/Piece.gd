@@ -99,16 +99,13 @@ func _ready():
     ]
     self.draw_shape(self.shape)
 
-    if !self.static_mode:
+    if !self.static_mode and !Engine.is_editor_hint():
         yield(fall(), "completed")
 
 
 func fall():
-    while true:
-        if self.static_mode:
-            return
-
-        if !Engine.is_editor_hint() and !self.stopped and game != null:
+    while !self.stopped:
+        if game != null and !self.get_tree().paused:
             if game.is_valid_position(self, Vector2(0,-1)):
                 self.position.y += BLOCK_SIZE
                 if Input.is_action_pressed("down"):
@@ -130,10 +127,10 @@ func wait_time():
         yield(get_tree(), "idle_frame")
 
 func _physics_process(delta):
-    if self.static_mode:
+    if self.static_mode or Engine.is_editor_hint():
         return
 
-    if !Engine.is_editor_hint() and !self.stopped:
+    if !self.stopped:
 
         if Input.is_action_pressed("down"):
             self.time = BLOCK_SIZE / 360.0
