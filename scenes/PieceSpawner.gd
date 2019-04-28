@@ -17,10 +17,3 @@ func spawn():
     output['piece'] = piece
     output['next'] = self.next_piece
     return output
-
-
-
-    add_child(piece)
-    return piece
-
-
