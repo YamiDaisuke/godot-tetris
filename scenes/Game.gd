@@ -23,6 +23,7 @@ onready var next_display = $NextPiece
 func _ready():
     for i in range(BOARD_HEIGHT):
         board.append([])
+        #warning-ignore:unused_variable
         for j in range(BOARD_WIDTH):
             board[i].append(null)
 
@@ -46,8 +47,12 @@ func spawn_piece():
     new_piece.set_level(self.level)
     piece_counter.add_piece(new_piece)
     new_piece.connect("piece_have_fallen", self, "_on_piece_fallen")
+    new_piece.connect("piece_is_soft_dropped", self, "_on_piece_softdropped")
     next_display.set_piece_shape(pieces['next'])
 
+#warning-ignore:unused_argument
+func _on_piece_softdropped(piece: Piece):
+    $Score.add_bonus(1)
 
 func _on_piece_fallen(piece: Piece):
 #    print("#### A piece have fallen!!!!")
