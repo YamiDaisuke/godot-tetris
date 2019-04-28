@@ -7,7 +7,7 @@ const BOARD_HEIGHT = 40
 const BOARD_WIDTH = 20
 
 export (Vector2) var origin = Vector2(-9.5, 39.5)
-export (int, 0, 999) var level = 0 setget set_level
+export (int, 0, 999) var level = 5 setget set_level
 export (int, 1, 99) var level_targe_lines = 10
 
 # Board Size 10x20
@@ -42,6 +42,7 @@ func set_level(new_level:int):
 func spawn_piece():
     var pieces = spawner.spawn()
     var new_piece = pieces['piece']
+    new_piece.game = self
     new_piece.set_level(self.level)
     piece_counter.add_piece(new_piece)
     new_piece.connect("piece_have_fallen", self, "_on_piece_fallen")
@@ -65,6 +66,15 @@ func _on_piece_fallen(piece: Piece):
 
     self.spawn_piece()
 
+func is_valid_position(piece: Piece, delta: Vector2 = Vector2.ZERO) -> bool:
+    for b in piece.blocks:
+        var position = normalize_position(b.global_position)
+        position += delta
+        if position.y < 0 or position.x < 0 or position.x >= BOARD_WIDTH or self.board[position.y][position.x] != null:
+            return false
+
+    return true
+
 
 """
 Adds the piece blocks to board and returns
@@ -77,9 +87,7 @@ func add_piece_2_board(piece: Piece):
         # print(" --> Block Position: %s" % self.to_local(b.global_position))
         var block_position = b.global_position
         var block_rotation = b.global_rotation
-        var position = (board_body.to_local(b.global_position) / 18)
-        position -= origin
-        position.y *= -1
+        var position = normalize_position(block_position)
 
         if position.y >= BOARD_HEIGHT - 1:
             to_review = null
@@ -96,6 +104,16 @@ func add_piece_2_board(piece: Piece):
         b.global_rotation = block_rotation
 
     return to_review
+
+
+"""
+Translate world position to board spaces
+"""
+func normalize_position(position: Vector2) -> Vector2:
+    var normalized = (board_body.to_local(position) / Piece.BLOCK_SIZE)
+    normalized -= origin
+    normalized.y *= -1
+    return normalized
 
 
 """

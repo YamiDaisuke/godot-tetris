@@ -4,7 +4,8 @@
 [ext_resource path="res://images/tiles.png" type="Texture" id=2]
 
 [sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 8.9, 9 )
+custom_solver_bias = 1.0
+extents = Vector2( 9, 9 )
 
 [node name="Block" type="CollisionShape2D"]
 shape = SubResource( 1 )
@@ -12,6 +13,7 @@ script = ExtResource( 1 )
 color = 4
 
 [node name="Sprite" type="Sprite" parent="."]
+show_behind_parent = true
 texture = ExtResource( 2 )
 region_enabled = true
 region_rect = Rect2( 72, 0, 18, 18 )
