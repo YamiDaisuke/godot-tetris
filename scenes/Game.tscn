@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=2]
+[gd_scene load_steps=22 format=2]
 
 [ext_resource path="res://scenes/Game.gd" type="Script" id=1]
 [ext_resource path="res://images/backgrounds/Nebula Aqua-Pink.png" type="Texture" id=2]
@@ -14,6 +14,8 @@
 [ext_resource path="res://sounds/Retro_8-Bit_Game-Powerup_Achievement_02.wav" type="AudioStream" id=12]
 [ext_resource path="res://sounds/Ludum Dare 32 - Track 4.wav" type="AudioStream" id=13]
 [ext_resource path="res://sounds/Retro_8-Bit_Game-Powerup_Achievement_06.wav" type="AudioStream" id=14]
+[ext_resource path="res://sounds/Death02.wav" type="AudioStream" id=15]
+[ext_resource path="res://fonts/Jamma 8x16 Monospaced.ttf" type="DynamicFontData" id=16]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 10, 360 )
@@ -23,6 +25,12 @@ extents = Vector2( 10, 360 )
 
 [sub_resource type="RectangleShape2D" id=3]
 extents = Vector2( 180, 10 )
+
+[sub_resource type="StyleBoxEmpty" id=4]
+
+[sub_resource type="DynamicFont" id=5]
+size = 48
+font_data = ExtResource( 16 )
 
 [node name="Game" type="Node2D"]
 pause_mode = 1
@@ -50,18 +58,20 @@ margin_top = 172.283
 margin_right = 254.012
 margin_bottom = 650.283
 
-[node name="PanelContainer" type="PanelContainer" parent="."]
-margin_left = 334.0
-margin_top = 16.0
-margin_right = 700.0
-margin_bottom = 742.0
+[node name="BoardBG" type="Node2D" parent="."]
+editor/display_folded = true
+position = Vector2( 260, -136 )
+
+[node name="PanelContainer" type="PanelContainer" parent="BoardBG"]
+margin_left = 74.0
+margin_top = 152.0
+margin_right = 440.0
+margin_bottom = 878.0
 custom_styles/panel = ExtResource( 5 )
 
-[node name="NinePatchRect" type="NinePatchRect" parent="."]
-margin_left = 260.0
-margin_top = -136.0
-margin_right = 820.0
-margin_bottom = 1011.0
+[node name="NinePatchRect" type="NinePatchRect" parent="BoardBG"]
+margin_right = 560.0
+margin_bottom = 1147.0
 texture = ExtResource( 6 )
 
 [node name="BoardBody" type="KinematicBody2D" parent="."]
@@ -129,8 +139,28 @@ stream = ExtResource( 12 )
 [node name="BGMusic" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 13 )
 volume_db = -10.0
+autoplay = true
 
 [node name="LevelUpFX" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 14 )
 volume_db = 2.0
+
+[node name="GameOver" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 15 )
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="GameOverPanel" type="PanelContainer" parent="CanvasLayer"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_styles/panel = SubResource( 4 )
+
+[node name="GameOverLabel" type="Label" parent="CanvasLayer/GameOverPanel"]
+margin_top = 354.0
+margin_right = 1024.0
+margin_bottom = 414.0
+custom_fonts/font = SubResource( 5 )
+text = "Game Over"
+align = 1
 

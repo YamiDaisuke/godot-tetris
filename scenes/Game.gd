@@ -42,12 +42,32 @@ func set_level(new_level:int):
     print("Changing level to %d" % self.level)
     $Score.level = self.level
 
+func game_over():
+    print("GAME OVER!!!")
+    $Timer.stop()
+    $BGMusic.stop()
+    $GameOver.play()
+
+    $CanvasLayer/GameOverPanel.show()
+
+    $PieceCounter.hide()
+    $BoardBG.hide()
+    $BoardBody.hide()
+    $Score.hide()
+    $Timer.hide()
+    $NextPiece.hide()
 
 func spawn_piece():
     var pieces = spawner.spawn()
     var new_piece = pieces['piece']
     new_piece.game = self
     new_piece.set_level(self.level)
+
+    if !self.is_valid_position(new_piece, Vector2(0, -1)):
+        new_piece.queue_free()
+        self.game_over()
+        return
+
     piece_counter.add_piece(new_piece)
     new_piece.connect("piece_have_fallen", self, "_on_piece_fallen")
     new_piece.connect("piece_is_soft_dropped", self, "_on_piece_softdropped")
@@ -65,6 +85,8 @@ func _on_piece_fallen(piece: Piece):
     if to_review == null:
         print("GAME OVER!!!")
         $Timer.stop()
+        $BGMusic.stop()
+        $GameOver.play()
         return
 
     var to_be_deleted = check_rows(to_review)
