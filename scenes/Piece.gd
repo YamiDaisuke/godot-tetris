@@ -77,11 +77,12 @@ export(bool) var static_mode = false
 export(int, "I", "Z", "S", "T", "L", "J", "O") var shape = 0 setget _set_shape
 export (Rotations) var rotationPosition = Rotations.ZERO setget _set_rotation
 export (Vector2) var velocity = Vector2(0, 18)
-export (float) var lock_delay = 0.3
+export (float) var lock_delay = 0.5
 
 # Audio Streams
 onready var pre_lock_fx = $PreLock
 onready var lock_fx = $Lock
+onready var lock_timer = $LockTimer
 
 var stopped = false
 var lock_time = 0
@@ -116,19 +117,21 @@ func fall():
                 self.position.y += BLOCK_SIZE
                 if Input.is_action_pressed("down"):
                     self.emit_signal("piece_is_soft_dropped", self)
-            elif self.lock_time > self.lock_delay:
-
-                self.lock_fx.play()
-
-                self.emit_signal("piece_have_fallen", self)
-                self.lock_time = 0
-                self.stopped = true
-            else:
-                if lock_time == 0:
-                    self.pre_lock_fx.play()
-                self.lock_time += self.time
+            elif self.lock_timer.is_stopped():
+                self.pre_lock_fx.play()
+                self.lock_timer.start(self.lock_delay)
 
         yield(wait_time(), "completed")
+
+func lock():
+    if !game.is_valid_position(self, Vector2(0,-1)):
+        self.lock_fx.play()
+        self.emit_signal("piece_have_fallen", self)
+        self.lock_time = 0
+        self.stopped = true
+    else:
+        self.position.y += BLOCK_SIZE
+        self.lock_timer.start(self.lock_delay)
 
 func wait_time():
     var time = 0
