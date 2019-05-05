@@ -7,7 +7,7 @@ const BOARD_HEIGHT = 40
 const BOARD_WIDTH = 20
 
 export (Vector2) var origin = Vector2(-9.5, 39.5)
-export (int, 0, 999) var level = 1 setget set_level
+export (int, 0, 999) var level = 0 setget set_level
 export (int, 1, 99) var level_targe_lines = 10
 
 # Board Size 10x20
@@ -181,7 +181,7 @@ func clear_rows(to_be_deleted: Array):
                     empty = false
             elif board[row][col]:
                     empty = false
-
+        $RowFX.play()
         if empty:
             break
 
