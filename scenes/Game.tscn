@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=2]
+[gd_scene load_steps=18 format=2]
 
 [ext_resource path="res://scenes/Game.gd" type="Script" id=1]
 [ext_resource path="res://images/backgrounds/Nebula Aqua-Pink.png" type="Texture" id=2]
@@ -13,6 +13,7 @@
 [ext_resource path="res://scenes/PauseControl.gd" type="Script" id=11]
 [ext_resource path="res://sounds/Retro_8-Bit_Game-Powerup_Achievement_02.wav" type="AudioStream" id=12]
 [ext_resource path="res://sounds/Ludum Dare 32 - Track 4.wav" type="AudioStream" id=13]
+[ext_resource path="res://sounds/Retro_8-Bit_Game-Powerup_Achievement_06.wav" type="AudioStream" id=14]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 10, 360 )
@@ -128,5 +129,8 @@ stream = ExtResource( 12 )
 [node name="BGMusic" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 13 )
 volume_db = -10.0
-autoplay = true
+
+[node name="LevelUpFX" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 14 )
+volume_db = 2.0
 

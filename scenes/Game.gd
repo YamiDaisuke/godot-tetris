@@ -35,6 +35,8 @@ func _ready():
 func set_level(new_level:int):
     if new_level != level:
         lines_in_level = 0
+        $RowFX.stop()
+        $LevelUpFX.play()
 
     level = new_level
     print("Changing level to %d" % self.level)
