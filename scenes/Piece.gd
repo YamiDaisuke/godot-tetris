@@ -77,7 +77,11 @@ export(bool) var static_mode = false
 export(int, "I", "Z", "S", "T", "L", "J", "O") var shape = 0 setget _set_shape
 export (Rotations) var rotationPosition = Rotations.ZERO setget _set_rotation
 export (Vector2) var velocity = Vector2(0, 18)
-export (float) var lock_delay = 0.5
+export (float) var lock_delay = 0.3
+
+# Audio Streams
+onready var pre_lock_fx = $PreLock
+onready var lock_fx = $Lock
 
 var stopped = false
 var lock_time = 0
@@ -88,6 +92,8 @@ var level_time = 0
 var time = 0
 
 var game = null
+
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -111,10 +117,15 @@ func fall():
                 if Input.is_action_pressed("down"):
                     self.emit_signal("piece_is_soft_dropped", self)
             elif self.lock_time > self.lock_delay:
+
+                self.lock_fx.play()
+
                 self.emit_signal("piece_have_fallen", self)
                 self.lock_time = 0
                 self.stopped = true
             else:
+                if lock_time == 0:
+                    self.pre_lock_fx.play()
                 self.lock_time += self.time
 
         yield(wait_time(), "completed")
