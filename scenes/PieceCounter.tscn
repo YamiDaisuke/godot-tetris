@@ -1,0 +1,250 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://styles/panel.tres" type="StyleBox" id=1]
+[ext_resource path="res://scenes/PieceCounter.gd" type="Script" id=2]
+[ext_resource path="res://scenes/Piece.tscn" type="PackedScene" id=3]
+[ext_resource path="res://fonts/Jamma 8x16 Monospaced.ttf" type="DynamicFontData" id=4]
+
+[sub_resource type="DynamicFont" id=1]
+size = 24
+font_data = ExtResource( 4 )
+
+[node name="PieceCounter" type="PanelContainer"]
+custom_styles/panel = ExtResource( 1 )
+script = ExtResource( 2 )
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+editor/display_folded = true
+margin_left = 1.0
+margin_top = 1.0
+margin_right = 188.0
+margin_bottom = 477.0
+custom_constants/margin_right = 10
+custom_constants/margin_top = 10
+custom_constants/margin_left = 10
+custom_constants/margin_bottom = 10
+
+[node name="Pieces" type="VBoxContainer" parent="MarginContainer"]
+margin_left = 10.0
+margin_top = 10.0
+margin_right = 177.0
+margin_bottom = 466.0
+custom_constants/separation = 20
+
+[node name="HBoxContainer1" type="HBoxContainer" parent="MarginContainer/Pieces"]
+editor/display_folded = true
+margin_right = 167.0
+margin_bottom = 36.0
+custom_constants/separation = 20
+
+[node name="ControlO" type="Control" parent="MarginContainer/Pieces/HBoxContainer1"]
+editor/display_folded = true
+margin_right = 72.0
+margin_bottom = 36.0
+rect_min_size = Vector2( 72, 36 )
+
+[node name="O" parent="MarginContainer/Pieces/HBoxContainer1/ControlO" instance=ExtResource( 3 )]
+position = Vector2( 36, 18 )
+static_mode = true
+shape = 6
+
+[node name="Label1" type="Label" parent="MarginContainer/Pieces/HBoxContainer1"]
+margin_left = 92.0
+margin_top = 3.0
+margin_right = 152.0
+margin_bottom = 33.0
+custom_fonts/font = SubResource( 1 )
+text = "0000"
+align = 2
+valign = 1
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/Pieces"]
+margin_top = 56.0
+margin_right = 167.0
+margin_bottom = 92.0
+custom_constants/separation = 20
+
+[node name="ControlI" type="Control" parent="MarginContainer/Pieces/HBoxContainer2"]
+editor/display_folded = true
+margin_right = 72.0
+margin_bottom = 36.0
+rect_min_size = Vector2( 72, 36 )
+
+[node name="I" parent="MarginContainer/Pieces/HBoxContainer2/ControlI" instance=ExtResource( 3 )]
+position = Vector2( 36, 36 )
+static_mode = true
+shape = 0
+
+[node name="Label2" type="Label" parent="MarginContainer/Pieces/HBoxContainer2"]
+margin_left = 92.0
+margin_top = 3.0
+margin_right = 152.0
+margin_bottom = 33.0
+rect_min_size = Vector2( 60, 0 )
+custom_fonts/font = SubResource( 1 )
+text = "0000"
+align = 2
+valign = 1
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/Pieces"]
+margin_top = 112.0
+margin_right = 167.0
+margin_bottom = 148.0
+custom_constants/separation = 20
+
+[node name="ControlS" type="Control" parent="MarginContainer/Pieces/HBoxContainer3"]
+margin_right = 72.0
+margin_bottom = 36.0
+rect_min_size = Vector2( 72, 36 )
+
+[node name="S" parent="MarginContainer/Pieces/HBoxContainer3/ControlS" instance=ExtResource( 3 )]
+position = Vector2( 36, 18 )
+static_mode = true
+shape = 2
+
+[node name="Label3" type="Label" parent="MarginContainer/Pieces/HBoxContainer3"]
+margin_left = 92.0
+margin_top = 3.0
+margin_right = 152.0
+margin_bottom = 33.0
+rect_min_size = Vector2( 60, 0 )
+custom_fonts/font = SubResource( 1 )
+text = "0000"
+align = 2
+valign = 1
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="MarginContainer/Pieces"]
+margin_top = 168.0
+margin_right = 167.0
+margin_bottom = 204.0
+custom_constants/separation = 20
+
+[node name="ControlZ" type="Control" parent="MarginContainer/Pieces/HBoxContainer4"]
+editor/display_folded = true
+margin_right = 72.0
+margin_bottom = 36.0
+rect_min_size = Vector2( 72, 36 )
+
+[node name="Z" parent="MarginContainer/Pieces/HBoxContainer4/ControlZ" instance=ExtResource( 3 )]
+position = Vector2( 36, 18 )
+static_mode = true
+shape = 1
+
+[node name="Label4" type="Label" parent="MarginContainer/Pieces/HBoxContainer4"]
+margin_left = 92.0
+margin_top = 3.0
+margin_right = 152.0
+margin_bottom = 33.0
+custom_fonts/font = SubResource( 1 )
+text = "0000"
+align = 2
+valign = 1
+
+[node name="HBoxContainer5" type="HBoxContainer" parent="MarginContainer/Pieces"]
+margin_top = 224.0
+margin_right = 167.0
+margin_bottom = 260.0
+custom_constants/separation = 20
+
+[node name="ControlL" type="Control" parent="MarginContainer/Pieces/HBoxContainer5"]
+editor/display_folded = true
+margin_right = 72.0
+margin_bottom = 36.0
+rect_min_size = Vector2( 72, 36 )
+
+[node name="L" parent="MarginContainer/Pieces/HBoxContainer5/ControlL" instance=ExtResource( 3 )]
+position = Vector2( 36, 18 )
+static_mode = true
+shape = 4
+
+[node name="Label5" type="Label" parent="MarginContainer/Pieces/HBoxContainer5"]
+margin_left = 92.0
+margin_top = 3.0
+margin_right = 152.0
+margin_bottom = 33.0
+custom_fonts/font = SubResource( 1 )
+text = "0000"
+align = 2
+valign = 1
+
+[node name="HBoxContainer6" type="HBoxContainer" parent="MarginContainer/Pieces"]
+margin_top = 280.0
+margin_right = 167.0
+margin_bottom = 316.0
+custom_constants/separation = 20
+
+[node name="ControlJ" type="Control" parent="MarginContainer/Pieces/HBoxContainer6"]
+editor/display_folded = true
+margin_right = 72.0
+margin_bottom = 36.0
+rect_min_size = Vector2( 72, 36 )
+
+[node name="J" parent="MarginContainer/Pieces/HBoxContainer6/ControlJ" instance=ExtResource( 3 )]
+position = Vector2( 36, 18 )
+static_mode = true
+shape = 5
+
+[node name="Label6" type="Label" parent="MarginContainer/Pieces/HBoxContainer6"]
+margin_left = 92.0
+margin_top = 3.0
+margin_right = 152.0
+margin_bottom = 33.0
+custom_fonts/font = SubResource( 1 )
+text = "0000"
+align = 2
+valign = 1
+
+[node name="HBoxContainer7" type="HBoxContainer" parent="MarginContainer/Pieces"]
+margin_top = 336.0
+margin_right = 167.0
+margin_bottom = 372.0
+custom_constants/separation = 20
+
+[node name="ControlT" type="Control" parent="MarginContainer/Pieces/HBoxContainer7"]
+editor/display_folded = true
+margin_right = 72.0
+margin_bottom = 36.0
+rect_min_size = Vector2( 72, 36 )
+
+[node name="T" parent="MarginContainer/Pieces/HBoxContainer7/ControlT" instance=ExtResource( 3 )]
+position = Vector2( 36, 18 )
+static_mode = true
+
+[node name="Label7" type="Label" parent="MarginContainer/Pieces/HBoxContainer7"]
+margin_left = 92.0
+margin_top = 3.0
+margin_right = 152.0
+margin_bottom = 33.0
+custom_fonts/font = SubResource( 1 )
+text = "0000"
+align = 2
+valign = 1
+
+[node name="ColorRect" type="ColorRect" parent="MarginContainer/Pieces"]
+margin_top = 392.0
+margin_right = 167.0
+margin_bottom = 394.0
+rect_min_size = Vector2( 0, 2 )
+
+[node name="HBoxContainer8" type="HBoxContainer" parent="MarginContainer/Pieces"]
+margin_top = 414.0
+margin_right = 167.0
+margin_bottom = 444.0
+custom_constants/separation = 20
+
+[node name="LabelTotalIndicator" type="Label" parent="MarginContainer/Pieces/HBoxContainer8"]
+margin_right = 75.0
+margin_bottom = 30.0
+custom_fonts/font = SubResource( 1 )
+text = "Total"
+valign = 1
+
+[node name="LabelTotal" type="Label" parent="MarginContainer/Pieces/HBoxContainer8"]
+margin_left = 95.0
+margin_right = 155.0
+margin_bottom = 30.0
+custom_fonts/font = SubResource( 1 )
+text = "0000"
+align = 2
+valign = 1
+
