@@ -48,7 +48,10 @@ func game_over():
     $BGMusic.stop()
     $GameOver.play()
 
+    $CanvasLayer/GameOverPanel.finish($Score.score, $Timer.seconds)
     $CanvasLayer/GameOverPanel.show()
+
+    $PauseControl.queue_free()
 
     $PieceCounter.hide()
     $BoardBG.hide()
