@@ -21,6 +21,7 @@ onready var piece_counter = $PieceCounter
 onready var next_display = $NextPiece
 
 func _ready():
+    randomize()
     for i in range(BOARD_HEIGHT):
         board.append([])
         #warning-ignore:unused_variable
