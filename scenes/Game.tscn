@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=2]
+[gd_scene load_steps=23 format=2]
 
 [ext_resource path="res://scenes/Game.gd" type="Script" id=1]
 [ext_resource path="res://images/backgrounds/Nebula Aqua-Pink.png" type="Texture" id=2]
@@ -15,7 +15,8 @@
 [ext_resource path="res://sounds/Ludum Dare 32 - Track 4.wav" type="AudioStream" id=13]
 [ext_resource path="res://sounds/Retro_8-Bit_Game-Powerup_Achievement_06.wav" type="AudioStream" id=14]
 [ext_resource path="res://sounds/Death02.wav" type="AudioStream" id=15]
-[ext_resource path="res://fonts/Jamma 8x16 Monospaced.ttf" type="DynamicFontData" id=16]
+[ext_resource path="res://scenes/GameOver.gd" type="Script" id=16]
+[ext_resource path="res://fonts/Jamma 8x16 Monospaced.ttf" type="DynamicFontData" id=17]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 10, 360 )
@@ -30,7 +31,7 @@ extents = Vector2( 180, 10 )
 
 [sub_resource type="DynamicFont" id=5]
 size = 48
-font_data = ExtResource( 16 )
+font_data = ExtResource( 17 )
 
 [node name="Game" type="Node2D"]
 pause_mode = 1
@@ -155,6 +156,7 @@ visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 custom_styles/panel = SubResource( 4 )
+script = ExtResource( 16 )
 
 [node name="GameOverLabel" type="Label" parent="CanvasLayer/GameOverPanel"]
 margin_top = 354.0
@@ -163,4 +165,5 @@ margin_bottom = 414.0
 custom_fonts/font = SubResource( 5 )
 text = "Game Over"
 align = 1
+valign = 1
 
